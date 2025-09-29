@@ -29,6 +29,30 @@ public class CRUD {
         executeSQL(sqlRead);
     }
 
+    public Anime LeerAnimeFiltrado(String nome){
+        Anime anime = null;
+        String sqlRead = "SELECT * FROM anime WHERE nome = ?";
+        try (Connection conn = Connector.conexion();
+             PreparedStatement pstmt = conn.prepareStatement(sqlRead)) {
+
+            pstmt.setString(1, nome);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    anime = new Anime(
+                            rs.getString("nome"),
+                            rs.getString("descripcion"),
+                            rs.getDate("data"),
+                            rs.getInt("puntuacion")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al leer el registro filtrado: " + e.getMessage());
+        }
+        return anime;
+    }
+
     public static void executeSQL (String sqlExecutable){
         try (Connection conn = Connector.conexion();
              PreparedStatement toRead = conn.prepareStatement(sqlExecutable);
