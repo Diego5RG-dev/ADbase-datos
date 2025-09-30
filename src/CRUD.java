@@ -5,7 +5,7 @@ import  ADconnector.Connector;
 
 public class CRUD {
 
-    public void insertarAnime(Anime anime) {
+    public static void insertarAnime(Anime anime) {
         String sql = "INSERT INTO anime (nome, descripcion, data, puntuacion) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Connector.conexion();
@@ -24,12 +24,9 @@ public class CRUD {
         }
     }
 
-    public void LeerDatosAnime() {
-        String sqlRead = "SELECT * FROM anime";
-        executeSQL(sqlRead);
-    }
 
-    public Anime LeerAnimeFiltrado(String nome){
+
+    public static Anime LeerAnimeFiltrado(String nome){
         Anime anime = null;
         String sqlRead = "SELECT * FROM anime WHERE nome = ?";
         try (Connection conn = Connector.conexion();

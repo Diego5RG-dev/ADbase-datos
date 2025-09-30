@@ -5,7 +5,7 @@ public class Connector {
     public static Connection conexion(){
         Connection conn = null;
         try {
-            String url = "jdbc:mysql://10.0.9.114:5432/anime";
+            String url = "jdbc:postgresql://10.0.9.114:5432/probas";
             String usuario = "postgres";
             String password = "admin";
             conn = DriverManager.getConnection(url, usuario, password);
