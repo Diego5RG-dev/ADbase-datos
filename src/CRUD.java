@@ -47,9 +47,46 @@ public class CRUD {
         } catch (SQLException e) {
             System.err.println("Error al leer el registro filtrado: " + e.getMessage());
         }
-        return anime;
+            return anime;
     }
 
+    public static void EliminarAnime(Anime anime){
+        String sqlDelete = "DELETE FROM anime WHERE nome = ?";
+        try (Connection conn = Connector.conexion();
+             PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
+
+            pstmt.setString(1, anime.getNome());
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("-> Registro '" + anime.getNome() + "' eliminado correctamente.");
+            } else {
+                System.out.println("-> No se encontró el registro con nombre: " + anime.getNome());
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el registro: " + e.getMessage());
+        }
+    }
+    public static void UpdateAnime(Anime anime, String onePiece){
+        String sqlUpdate = "UPDATE anime SET descripcion = ?, data = ?, puntuacion = ? WHERE nome = ?";
+        try (Connection conn = Connector.conexion();
+             PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+
+            pstmt.setString(1, anime.getDescripcion());
+            pstmt.setDate(2, anime.getData());
+            pstmt.setInt(3, anime.getPuntuacion());
+            pstmt.setString(4, anime.getNome());
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("-> Registro '" + anime.getNome() + "' actualizado correctamente.");
+            } else {
+                System.out.println("-> No se encontró el registro con nombre: " + anime.getNome());
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar el registro: " + e.getMessage());
+        }
+    }
     public static void executeSQL (String sqlExecutable){
         try (Connection conn = Connector.conexion();
              PreparedStatement toRead = conn.prepareStatement(sqlExecutable);
