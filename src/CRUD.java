@@ -67,24 +67,44 @@ public class CRUD {
             System.err.println("Error al eliminar el registro: " + e.getMessage());
         }
     }
-    public static void UpdateAnime(Anime anime, String onePiece){
+    public static void UpdateAnime(Anime anime, String nombreAntiguo){
         String sqlUpdate = "UPDATE anime SET descripcion = ?, data = ?, puntuacion = ? WHERE nome = ?";
+
         try (Connection conn = Connector.conexion();
              PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+
 
             pstmt.setString(1, anime.getDescripcion());
             pstmt.setDate(2, anime.getData());
             pstmt.setInt(3, anime.getPuntuacion());
-            pstmt.setString(4, anime.getNome());
+
+
+            pstmt.setString(4, nombreAntiguo);
 
             int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("-> Registro '" + anime.getNome() + "' actualizado correctamente.");
-            } else {
-                System.out.println("-> No se encontró el registro con nombre: " + anime.getNome());
-            }
+
         } catch (SQLException e) {
             System.err.println("Error al actualizar el registro: " + e.getMessage());
+        }
+    }
+
+    public static  void leerTodosAnimes(){
+        String sqlReadAll = "SELECT * FROM anime";
+        try (Connection conn = Connector.conexion();
+             PreparedStatement pstmt = conn.prepareStatement(sqlReadAll);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Anime anime = new Anime(
+                        rs.getString("nome"),
+                        rs.getString("descripcion"),
+                        rs.getDate("data"),
+                        rs.getInt("puntuacion")
+                );
+                System.out.println(anime);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al leer todos los registros: " + e.getMessage());
         }
     }
     public static void executeSQL (String sqlExecutable){
