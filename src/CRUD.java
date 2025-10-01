@@ -52,19 +52,22 @@ public class CRUD {
         }
     }
 
-    public static void EliminarAnime(Anime anime){
+    public static void EliminarAnime(String nome) {
         String sqlDelete = "DELETE FROM anime WHERE nome = ?";
+
         try (Connection conn = Connector.conexion();
              PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
 
-            pstmt.setString(1, anime.getNome());
+            pstmt.setString(1, nome);
 
             int rowsAffected = pstmt.executeUpdate();
+
             if (rowsAffected > 0) {
-                System.out.println("-> Registro '" + anime.getNome() + "' eliminado correctamente.");
+                System.out.println("-> Registro '" + nome + "' eliminado correctamente.");
             } else {
-                System.out.println("-> No se encontró el registro con nombre: " + anime.getNome());
+                System.out.println("-> No se encontró el registro con nombre: " + nome);
             }
+
         } catch (SQLException e) {
             System.err.println("Error al eliminar el registro: " + e.getMessage());
         }
@@ -81,6 +84,8 @@ public class CRUD {
             pstmt.setInt(4, anime.getPuntuacion());
             pstmt.setString(5, nombreAntiguo);
 
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("-> Registro '" + nombreAntiguo + "' actualizado correctamente a '" + anime.getNome() + "'.");
         } catch (SQLException e) {
             System.err.println("Error al actualizar el registro: " + e.getMessage());
         }
