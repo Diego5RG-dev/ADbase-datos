@@ -26,28 +26,26 @@ public class CRUD {
 
 
 
-    public static Anime LeerAnimeFiltrado(String nome){
-        Anime anime = null;
-        String sqlRead = "SELECT * FROM anime WHERE nome = ?";
+    public static void LeerAnimeFiltrado(String nome) {
+        String sqlRead = "SELECT * FROM anime where nome = ?";
+
         try (Connection conn = Connector.conexion();
              PreparedStatement pstmt = conn.prepareStatement(sqlRead)) {
-
             pstmt.setString(1, nome);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    anime = new Anime(
-                            rs.getString("nome"),
-                            rs.getString("descripcion"),
-                            rs.getDate("data"),
-                            rs.getInt("puntuacion")
-                    );
+                while (rs.next()) {
+                    Anime anime = new Anime();
+                    anime.setNome(rs.getString("nome"));
+                    anime.setDescripcion(rs.getString("descripcion"));
+                    anime.setData(rs.getDate("data"));
+                    anime.setPuntuacion(rs.getInt("puntuacion"));
+                    System.out.println(anime);
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al leer el registro filtrado: " + e.getMessage());
+            System.err.println("Error al leer registros: " + e.getMessage());
         }
-            return anime;
     }
 
     public static void EliminarAnime(Anime anime){
@@ -68,18 +66,17 @@ public class CRUD {
         }
     }
     public static void UpdateAnime(Anime anime, String nombreAntiguo){
-        String sqlUpdate = "UPDATE anime SET descripcion = ?, data = ?, puntuacion = ? WHERE nome = ?";
+        String sqlUpdate = "UPDATE anime SET nome = ?, descripcion = ?, data = ?, puntuacion = ? WHERE nome = ?";
 
         try (Connection conn = Connector.conexion();
              PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
 
+            pstmt.setString(1, anime.getNome());
+            pstmt.setString(2, anime.getDescripcion());
+            pstmt.setDate(3, anime.getData());
+            pstmt.setInt(4, anime.getPuntuacion());
+            pstmt.setString(5, nombreAntiguo);
 
-            pstmt.setString(1, anime.getDescripcion());
-            pstmt.setDate(2, anime.getData());
-            pstmt.setInt(3, anime.getPuntuacion());
-
-
-            pstmt.setString(4, nombreAntiguo);
 
             int rowsAffected = pstmt.executeUpdate();
 
