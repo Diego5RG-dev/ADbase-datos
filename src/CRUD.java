@@ -31,15 +31,19 @@ public class CRUD {
 
         try (Connection conn = Connector.conexion();
              PreparedStatement pstmt = conn.prepareStatement(sqlRead)) {
+
             pstmt.setString(1, nome);
 
             try (ResultSet rs = pstmt.executeQuery()) {
+
                 while (rs.next()) {
                     Anime anime = new Anime();
+
                     anime.setNome(rs.getString("nome"));
                     anime.setDescripcion(rs.getString("descripcion"));
                     anime.setData(rs.getDate("data"));
                     anime.setPuntuacion(rs.getInt("puntuacion"));
+
                     System.out.println(anime);
                 }
             }
@@ -102,18 +106,6 @@ public class CRUD {
             }
         } catch (SQLException e) {
             System.err.println("Error al leer todos los registros: " + e.getMessage());
-        }
-    }
-    public static void executeSQL (String sqlExecutable){
-        try (Connection conn = Connector.conexion();
-             PreparedStatement toRead = conn.prepareStatement(sqlExecutable);
-             ResultSet resultSet = toRead.executeQuery();
-        ){
-            while (resultSet.next()) {
-                System.out.println("proba: " + resultSet.getString("proba"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error leyendo" + e.getMessage());
         }
     }
 

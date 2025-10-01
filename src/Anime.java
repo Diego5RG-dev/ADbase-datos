@@ -16,7 +16,9 @@ public class Anime {
         this.data = data;
         this.puntuacion = puntuacion;
     }
-
+    public Anime() {
+    }
+    
     public String getNome() {
         return nome;
     }
