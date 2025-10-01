@@ -81,9 +81,6 @@ public class CRUD {
             pstmt.setInt(4, anime.getPuntuacion());
             pstmt.setString(5, nombreAntiguo);
 
-
-            int rowsAffected = pstmt.executeUpdate();
-
         } catch (SQLException e) {
             System.err.println("Error al actualizar el registro: " + e.getMessage());
         }
