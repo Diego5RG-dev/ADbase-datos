@@ -33,12 +33,10 @@ public class CRUD {
              PreparedStatement pstmt = conn.prepareStatement(sqlRead)) {
 
             pstmt.setString(1, nome);
-
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 while (rs.next()) {
                     Anime anime = new Anime();
-
                     anime.setNome(rs.getString("nome"));
                     anime.setDescripcion(rs.getString("descripcion"));
                     anime.setData(rs.getDate("data"));

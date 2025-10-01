@@ -1,5 +1,3 @@
-// Anime.java
-
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -51,7 +49,7 @@ public class Anime {
         this.puntuacion = puntuacion;
     }
 
-    private String dateToString(Date dataD) {
+    public String dateToString(Date dataD) {
         if (dataD == null) {
             return "N/A";
         }
