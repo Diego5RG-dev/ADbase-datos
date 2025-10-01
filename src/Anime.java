@@ -7,7 +7,6 @@ public class Anime {
     private Date data;
     private int puntuacion;
 
-    // Constructor
     public Anime(String nome, String descripcion, Date data, int puntuacion) {
         this.nome = nome;
         this.descripcion = descripcion;
